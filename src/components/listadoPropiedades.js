@@ -8,17 +8,24 @@ import useFiltro from '../hooks/useFiltro';
 const ListadoPropiedades = () => {
 
     const resultado = usePropiedades();
-    const [propiedades, setPropiedades] = useState([]);
+    const [propiedades] = useState(resultado);
+    const [filtrado, setFiltrado] = useState([]);
+    //Filtrado por propiedades.
+    const { categoria, FiltroUI } = useFiltro();
 
     useEffect(() => {
         
-        setPropiedades(resultado);
+        if(categoria){
 
-    }, [])
+            const filtro = propiedades.filter(propiedad => propiedad.categoria.nombre === categoria);
+            setFiltrado(filtro);
+        } else{
+            setFiltrado(propiedades);
+        }
+
+    }, [categoria, propiedades])
     // console.log(propiedades);
 
-    //Filtrado por propiedades.
-    const { FiltroUI } = useFiltro();
 
 
     return ( 
@@ -33,7 +40,7 @@ const ListadoPropiedades = () => {
             {FiltroUI()}
 
             <ul className={listadoPropiedadesCSS.propiedades}>
-                {propiedades.map(propiedad => (
+                {filtrado.map(propiedad => (
                     <PropiedadPreview
                         key={propiedad.id}
                         propiedad={propiedad}

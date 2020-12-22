@@ -44,7 +44,7 @@ const Contenido = styled.div`
 
 const PropiedadPreview = ({propiedad}) => {
 
-    const {nombre, descripcion, imagen, precio, habitaciones, wc, estacionamiento} = propiedad;
+    const {nombre, imagen, precio, habitaciones, wc, estacionamiento} = propiedad;
 
     return ( 
         <Card>

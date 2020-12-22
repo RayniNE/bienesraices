@@ -5,6 +5,12 @@ exports.createPages = async ({actions, graphql, reporter}) => {
 
     const resultado = await graphql(`
     query{
+      allStrapiPaginas{
+        nodes{
+          nombre
+          id
+        }
+      }
         allStrapiPropiedades{
           nodes{
             id
@@ -21,7 +27,20 @@ exports.createPages = async ({actions, graphql, reporter}) => {
         reporter.panic("No hubo resultados", resultado.errors);
     }
 
+    const paginas = resultado.data.allStrapiPaginas.nodes;
     const propiedades = resultado.data.allStrapiPropiedades.nodes;
+
+    paginas.forEach((pagina) => {
+
+        actions.createPage({
+            path: urlSlug(pagina.nombre),
+            component: require.resolve('./src/components/paginas.js'),
+            context: {
+              id: pagina.id
+            }
+        })
+
+    });
 
     propiedades.forEach((propiedad) => {
 
